@@ -1,0 +1,161 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/jquery-easyui-1.5.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/icon.css" rel="stylesheet" />
+    @*<script src="~/Scripts/jquery-2.2.1.js"></script>*@
+    <script src="~/jquery-easyui-1.5.1/jquery.min.js"></script>
+    <script src="~/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
+   
+    <script type="text/javascript">
+        $(function () {
+            $("#dlg").dialog({ closed: true });
+        });
+        var tb = [{
+            text: '添加',
+            iconCls: 'icon-add',
+            handler: function () {
+                $("#dlg").dialog({
+                    title: "部门添加--",
+                    iconCls: 'icon-add',
+                   closed:false,
+                    modal:true,  //指定该对话框是模态对话框
+                    width: 300,
+                    height: 200,
+                    buttons: [
+                        {
+                            text: '保存',
+                            iconCls: 'icon-save',
+                            handler: function () {
+                                $.get("/departments/AddDepartment", { name: $("#depname").val(), status: 0 }, function (data) {
+                                    if (data == "ok") {
+                                        $.messager.show({
+                                            title: '提示...',
+                                            msg: '保存成功！',
+                                            showType:'show'
+                                        });
+                                        $("#dlg").dialog("close");
+                                        $("#dg").datagrid("reload");
+                                        $("#depname").val("");
+                                    }
+                                    else
+                                        $.messager.show({
+                                            title: '提示...',
+                                            msg: '保存失败！',
+                                            showType: 'show'
+                                        });
+                                }, "text");
+                            }
+                        },
+                        {
+                            text: '取消',
+                            iconCls: 'icon-cancel',
+                            handler: function () {
+                                $("#dlg").dialog("close");
+                                $("#depname").val("");
+                            }
+                        }
+                    ]
+                });
+            }
+        }, {
+            text: '修改',
+            iconCls: 'icon-edit',
+            handler: function () {
+                var id = $("#dg").datagrid("getSelected").ID;
+                var url = "/departments/EditIndex?id=" + id;
+                $("#dlgEdit").dialog({
+                    title: "部门修改--",
+                    iconCls: 'icon-Edit',
+                    
+                    modal: true,  //指定该对话框是模态对话框
+                    width: 300,
+                    height: 200,
+                    href: url,
+                    buttons: [
+                       {
+                           text: '保存',
+                           iconCls: 'icon-save',
+                           handler: function () {
+                               var name = $("#view_EditIndex_depname").val();
+                               var id = $("#view_EditIndex_Id").val();
+                               console.log(id);
+                               $.get("/departments/EditDepartment", { id: id, name: name, status: 0 }, function (data) {
+                                   if (data == "ok") {
+                                       $.messager.show({
+                                           title: '提示...',
+                                           msg: '保存成功！',
+                                           showType: 'show'
+                                       });
+                                       $("#dlgEdit").dialog("close");
+                                       $("#dg").datagrid("reload");
+                                   }
+                                   else
+                                       $.messager.show({
+                                           title: '提示...',
+                                           msg: '保存失败！',
+                                           showType: 'show'
+                                       });
+
+                               }, "text");
+                           }
+                       },
+                        {
+                            text: '取消',
+                            iconCls: 'icon-cancel',
+                            handler: function () {
+                                $("#dlgEdit").dialog("close");
+                                
+                            }
+                        }
+                    ]
+                });
+            }
+        }, '-', {
+            text: '删除',
+            iconCls: 'icon-remove',
+            handler: function () {
+                var id = $("#dg").datagrid("getSelected").ID;
+
+                $.get("/departments/deleteDepartment", { id: id }, function (data) {
+                    if (data == "ok")
+                        //datagrid刷新，重新装载数据
+                        $("#dg").datagrid("reload");
+
+                }, "text");
+               
+            }
+        }];
+    </script>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div>
+        <table id="dg" class="easyui-datagrid" style="width:400px;height:250px" title="部门管理---"
+               data-options="rownumbers:true,url:'/departments/getdepartments',fitColumns:true,singleSelect:true,toolbar:tb,method:'post'">
+            <thead>
+                <tr>
+                    <th data-options="field:'Name',width:100">部门名称</th>
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+  
+    <div id="dlg">
+        <div><br/><br /><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;部门名称：<input type="text" id="depname" name="name" />
+        </div>
+    </div>
+   <div id="dlgEdit" style="padding:40px 10px"></div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <script>
+        var xmlhttp;
+        function CallServer() {
+            if (window.XMLHttpRequest) { xmlhttp = new XMLHttpRequest();  }
+            else if (window.ActiveXObject) {
+                try {xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");  }
+                catch (e) {
+                    try {xmlhttp = new ActiveXObject("MsXml2.XMLHTTP"); }
+                    catch (ee) {alert("浏览器不支持ajax！");
+                        return;  //不再执行后续代码，不再请求服务器
+                    }
+                }
+            }
+            xmlhttp.onreadystatechange = callBack;  //实现异步交互的核心            xmlhttp.open("get", "/content/handler1.ashx", true);            xmlhttp.send(null);
+        }
+        function callBack()//当请求响应的状态发生变化的时候要调用的函数
+        {
+            if (xmlhttp.readyState == 4) {//请求的状态：0-未初始化；1-正在加载；2-已加载；3-交互中；4-完成                if (xmlhttp.status == 200) {//服务器http状态码：200对应ok                    document.getElementById("s1").innerHTML = xmlhttp.responseText;
+                }
+            }
+        }
+        window.onload = function () {document.getElementById("btn1").onclick =  CallServer;};
+    </script>
+</head><body><button id="btn1">请求服务器</button><span id="s1"></span></body>
+</html>

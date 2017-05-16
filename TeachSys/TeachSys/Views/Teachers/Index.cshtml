@@ -1,0 +1,250 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/globals.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.5.1/jquery.min.js"></script>
+    <script src="~/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
+    <script src="~/jquery-easyui-1.5.1/locale/easyui-lang-zh_CN.js"></script>
+    
+    <script>
+        $(function () {
+            var tb =
+                [
+                    {
+                        text: '添加',
+                        iconCls: 'icon-add',
+                        handler: function () {
+                            var url = "/teachers/Add";
+                            $("#teacheres_add_dlg").dialog({
+                                title: "教师添加--",
+                                iconCls: 'icon-add',
+
+                                modal: true,  //指定该对话框是模态对话框
+                                width: 320,
+                                height: 240,
+                                href: url,
+                                buttons: [
+                                   {
+                                       text: '保存',
+                                       iconCls: 'icon-save',
+                                       handler: function () {
+                                           //easyui的form自动提交（ajax)
+                                           $("#teachers_add").form({
+                                               url: "/Teachers/AddTeacher/",
+                                               success: function (data) {
+                                                   if (data == "ok") {
+                                                       $.messager.show({
+                                                           title: '提示...',
+                                                           msg: '保存成功！',
+                                                           showType: 'show'
+                                                       });
+                                                       $("#teacheres_add_dlg").dialog("close");
+                                                       $("#tb").datagrid("reload");
+                                                   }
+                                                   else
+                                                       $.messager.show({
+                                                           title: '提示...',
+                                                           msg: '保存失败！',
+                                                           showType: 'show'
+                                                       });
+                                                    }
+                                           });
+                                           $('#teachers_add').submit();  //提交到服务器端
+                                       }
+                                   },
+                                    {
+                                        text: '取消',
+                                        iconCls: 'icon-cancel',
+                                        handler: function () {
+                                            $("#teacheres_add_dlg").dialog("close");
+
+                                        }
+                                    }
+                                ]
+                            });
+                        }
+
+                    },
+                    {
+                        text: "修改",
+                        iconCls: "icon-edit",
+                        handler: function () {
+                            var row = $("#tb").datagrid("getSelected");
+                            if (row == null) {
+                                $.messager.alert("提示...", "请选择行!", "warning");
+                                return;
+                            }
+                            var id = row.ID;
+                            var url = "/teachers/Edit/"+id;
+                            $("#teacheres_add_dlg").dialog({
+                                title: "教师修改--",
+                                iconCls: 'icon-add',
+
+                                modal: true,  //指定该对话框是模态对话框
+                                width: 320,
+                                height: 240,
+                                href: url,
+                                buttons: [
+                                   {
+                                       text: '保存',
+                                       iconCls: 'icon-save',
+                                       handler: function () {
+                                           //easyui的form自动提交（ajax)
+                                           $("#teachers_edit").form({
+                                               url: "/Teachers/EditTeacher/",
+                                               success: function (data) {
+                                                   if (data == "ok") {
+                                                       $.messager.show({
+                                                           title: '提示...',
+                                                           msg: '保存成功！',
+                                                           showType: 'show'
+                                                       });
+                                                       $("#teacheres_add_dlg").dialog("close");
+                                                       $("#tb").datagrid("reload");
+                                                   }
+                                                   else
+                                                       $.messager.show({
+                                                           title: '提示...',
+                                                           msg: '保存失败！',
+                                                           showType: 'show'
+                                                       });
+                                               }
+                                           });
+                                           $('#teachers_edit').submit();  //提交到服务器端
+                                       }
+                                   },
+                                    {
+                                        text: '取消',
+                                        iconCls: 'icon-cancel',
+                                        handler: function () {
+                                            $("#teacheres_add_dlg").dialog("close");
+
+                                        }
+                                    }
+                                ]
+                            });
+                        }
+                    },
+                    '-',
+                    {
+                        text: '删除',
+                        iconCls: 'icon-remove',
+                        handler: function () {
+                            var row = $("#tb").datagrid("getSelected");
+                            if (row == null) {
+                                $.messager.alert("提示...", "请选择行!", "warning");
+                                return;
+                            }
+                           $.messager.confirm("提示...", "确信要删除班级“" + row.Name + "”吗?", function (t) {
+                                if (!t)
+                                    return;
+                                var id = row.ID;
+                                var url = "/teachers/Delete/" + id;
+                                $.get(url, function (data) {
+                                    if (data == "ok") {
+                                        $.messager.show({
+                                            title: '提示...',
+                                            msg: '删除成功！',
+                                            showType: 'show'
+                                        });
+
+                                        $("#tb").datagrid("reload");
+                                    }
+                                    else
+                                        $.messager.show({
+                                            title: '提示...',
+                                            msg: '删除失败！',
+                                            showType: 'show'
+                                        });
+                                }, "text");
+                            });
+                           
+                        }
+                    },
+                    '-',
+                    {
+                        text: '密码重置',
+                        iconCls: 'icon-lock',
+                        handler: function () {
+                            var row = $("#tb").datagrid("getSelected");
+                            if (row == null)
+                            {
+                                $.messager.alert("提示...","请选择要重置密码的用户!","warning");
+                                return;
+                            }
+                            var name = row.Name;
+                            //var r = confirm("确信要重置“" + name + "”的密码吗？");//BOM浏览器对象，会返回用户选择的按钮,true/false
+                            $.messager.confirm("提示...", "确信要重置“" + name + "”的密码吗？", function (result) {
+                                if(result) //true
+                                {
+                                    //取到id，传送个服务器
+                                    var id = row.ID;
+                                    $.get("/teachers/ResetPass/", { id: id }, function (data) {
+                                        if(data == "ok")
+                                            $.messager.show({
+                                                title: '提示...',
+                                                msg: '密码重置成功！',
+                                                showType: 'show'
+                                            });
+                                        else
+                                            $.messager.show({
+                                                title: '提示...',
+                                                msg: '密码重置失败！',
+                                                showType: 'show'
+                                            });
+                                    },"text");
+                                    
+                                }
+                                
+                            });
+                        }
+                    }
+                ];
+
+            $("#tb").datagrid({
+                url: '/teachers/getteachers/',
+                width: 700,
+                height: 420,
+                fitColumns: true,
+                singleSelect: true,
+                pagination: true,
+
+                toolbar: tb,
+                columns: [[
+                    { field: 'Name', title: '姓名', width: 80 },
+                    { field: 'TeacherNo', title: '教工号', width: 100 },
+                    {
+                        field: 'IsLogin',//用原来的是否允许登陆，修改为现在的是否为管理员
+                        title: "是否为管理员",
+                        formatter:function(val,row){//val:0或1
+                            if (val == "0")  //不是管理员
+                                return "<input type='checkbox' disabled='desabled'/>";
+                            else
+                                return "<input type='checkbox' checked='checked' disabled='desabled'/>";
+                        },
+                        width: 80
+                    },
+                    { field: 'departmentName', title: '部门名称', width: 180 }
+                ]]
+            });
+        });
+        
+    </script>
+</head>
+<body>
+    <div>
+        <table id="tb"></table>
+    </div>
+    <div id="teacheres_add_dlg"></div>
+
+</body>
+</html>

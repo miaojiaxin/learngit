@@ -1,0 +1,26 @@
+﻿@{
+    Layout = null;
+}
+@Model Departments;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditIndex</title>
+    <script src="~/Scripts/jquery-2.2.1.js"></script>
+    
+    
+</head>
+<body>
+    
+    <div>
+        
+        部门名称：<input type="text" id="view_EditIndex_depname" name="name" value="@Model.Name" />
+        <input type="hidden" id="view_EditIndex_Id" value="@Model.ID"/>
+        @*<input type="text" id="view_EditIndex_depname" name="name" value="@ViewBag.DepartmentName" />*@
+        
+    </div>
+    
+</body>
+</html>

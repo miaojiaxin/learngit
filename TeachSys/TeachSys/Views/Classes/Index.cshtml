@@ -1,0 +1,221 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/globals.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.5.1/jquery.min.js"></script>
+    <script src="~/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
+
+    <script src="~/jquery-easyui-1.5.1/locale/easyui-lang-zh_CN.js"></script>
+    <script>
+        $(function () {
+            var tb =
+               [
+                   {
+                       text: '添加',
+                       iconCls: 'icon-add',
+                       handler: function () {
+                           var url = "/classes/Add";
+                           $("#classes_add_dlg").dialog({
+                               title: "班级添加--",
+                               iconCls: 'icon-add',
+
+                               modal: true,  //指定该对话框是模态对话框
+                               width: 300,
+                               height: 200,
+                               href: url,
+                               buttons: [
+                                  {
+                                      text: '保存',
+                                      iconCls: 'icon-save',
+                                      handler: function () {
+                                          //easyui的form自动提交（ajax)
+                                          $("#classes_add_form").form({
+                                              url: "/classes/AddClass/",
+                                              onSubmit:function(){
+                                                  $("#classes_add_majorid").val($("#majors").combobox("getValue"));
+                                              },
+                                              success: function (data) {
+                                                  if (data == "ok") {
+                                                      $.messager.show({
+                                                          title: '提示...',
+                                                          msg: '保存成功！',
+                                                          showType: 'show'
+                                                      });
+                                                      $("#classes_add_dlg").dialog("close");
+                                                      $("#tb").datagrid("reload");
+                                                  }
+                                                  else
+                                                      $.messager.show({
+                                                          title: '提示...',
+                                                          msg: '保存失败！',
+                                                          showType: 'show'
+                                                      });
+                                              }
+                                          });
+
+                                          $('#classes_add_form').submit();  //提交到服务器端
+
+                                      }
+                                  },
+                                   {
+                                       text: '取消',
+                                       iconCls: 'icon-cancel',
+                                       handler: function () {
+                                           $("#classes_add_dlg").dialog("close");
+
+                                       }
+                                   }
+                               ]
+                           });
+                       }
+                   },
+                   {
+                       text: "修改",
+                       iconCls: "icon-edit",
+                       handler: function () {
+                           var row = $("#tb").datagrid("getSelected");
+                           if (row == null) {
+                               $.messager.alert("提示...", "请选择行!", "warning");
+                               return;
+                           }
+                           var id = row.ID;
+                           var url = "/classes/Edit/" + id;
+                           $("#classes_add_dlg").dialog({
+                               title: "班级修改--",
+                               iconCls: 'icon-add',
+                               modal: true,  //指定该对话框是模态对话框
+                               width: 300,
+                               height: 200,
+                               href: url,
+                               buttons: [
+                                  {
+                                      text: '保存',
+                                      iconCls: 'icon-save',
+                                      handler: function () {
+                                          //easyui的form自动提交（ajax)
+                                          $("#classes_edit_form").form({
+                                              url: "/classes/EditClass/",
+                                              success: function (data) {
+                                                  if (data == "ok") {
+                                                      $.messager.show({
+                                                          title: '提示...',
+                                                          msg: '保存成功！',
+                                                          showType: 'show'
+                                                      });
+                                                      $("#classes_add_dlg").dialog("close");
+                                                      $("#tb").datagrid("reload");
+                                                  }
+                                                  else
+                                                      $.messager.show({
+                                                          title: '提示...',
+                                                          msg: '保存失败！',
+                                                          showType: 'show'
+                                                      });
+                                              }
+                                          });
+
+                                          $('#classes_edit_form').submit();  //提交到服务器端
+
+                                      }
+                                  },
+                                   {
+                                       text: '取消',
+                                       iconCls: 'icon-cancel',
+                                       handler: function () {
+                                           $("#classes_add_dlg").dialog("close");
+
+                                       }
+                                   }
+                               ]
+                           });
+                       
+                       }
+                   },
+                   '-',
+                   {
+                       text: '删除',
+                       iconCls: 'icon-remove',
+                       handler: function () {
+                           var row = $("#tb").datagrid("getSelected");
+                           if (row == null) {
+                               $.messager.alert("提示...", "请选择行!", "warning");
+                               return;
+                           }
+                           $.messager.confirm("提示...", "确信要删除班级“" + row.Name + "”吗?", function (t) {
+                               if (!t)
+                                   return;
+                               var id = row.ID;
+                               var url = "/classes/Delete/" + id;
+                               $.post(url, function (data) {
+                                   if (data == "ok") {
+                                       $.messager.show({
+                                           title: '提示...',
+                                           msg: '删除成功！',
+                                           showType: 'show'
+                                       });
+
+                                       $("#tb").datagrid("reload");
+                                   }
+                                   else
+                                       $.messager.show({
+                                           title: '提示...',
+                                           msg: '删除失败！',
+                                           showType: 'show'
+                                       });
+                               }, "text");
+                           });
+                           
+                       }
+                   }
+               ];
+
+            $("#majors").combobox({
+                width: 240,
+                editable:false,
+                url:'/majors/GetMajors',
+                valueField: 'ID',
+                textField: "Name"
+            });
+            $("#majors").combobox("select","1");
+            $("#tb").datagrid({
+                url: '/classes/GetClassesListByMajorIdWithDirector/',
+                queryParams:{
+                    majorId: $("#majors").combobox("getValue")
+                },
+                width: 700,
+                height: 420,
+                fitColumns: true,
+                singleSelect: true,
+                toolbar: tb,
+                columns: [[
+                    { field: 'Name', title: '班级名称', width: 80 },
+                    { field: 'TeacherName', title: '班主任姓名', width: 100 },
+                    { field: 'TeacherNo', title: '班主任工号工号', width: 100 }
+                ]]
+            });
+        });
+        function query() {
+            $("#tb").datagrid("load", {
+                majorId: $("#majors").combobox("getValue")
+            });
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <select id="majors" class="easyui-combobox">
+        </select><a onclick="query();" style="width:60px;" class="easyui-linkbutton">查询</a>
+        <table id="tb"></table>
+    </div>
+    <div id="classes_add_dlg"></div>
+</body>
+</html>

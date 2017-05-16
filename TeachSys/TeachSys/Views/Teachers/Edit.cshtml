@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+@Model Teachers;
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+
+    <div style="margin:10px">
+        <form id="teachers_edit" method="post">
+            <input type="hidden" id="teachers_edit_id" value="@Model.ID" name="ID">
+            <input id="teachers_edit_depart" type="hidden" name="DeptID" value="@Model.DeptID" />
+            <div class="input_line">
+                <label class="leftlabel">姓名：</label><input class="easyui-textbox" id="teachers_edit_teacherno" name="Name" value="@Model.Name" data-options="prompt:'请输入姓名'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabel">教工号：</label><input class="easyui-textbox" id="teachers_edit_teacherno" name="TeacherNo" value="@Model.TeacherNo" data-options="prompt:'请输入教工号'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabel">是否管理员：</label>
+                               @{
+                    if(@Model.IsLogin==1)
+                    {
+                        @:<input type='checkbox' id='teacher_edit_isLogin' value='1' checked name='IsLogin'/>
+                    }
+                    else
+                    {
+                        @:<input type='checkbox' id='teacher_edit_isLogin' value='1' name='IsLogin'/>
+                    }
+                }
+                @*<input type="checkbox" id="teachers_edit_islogin" value="1"  name="IsLogin">*@
+            </div>
+        </form>
+    </div>
+</body>
+</html>

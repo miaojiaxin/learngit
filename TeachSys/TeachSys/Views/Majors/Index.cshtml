@@ -1,0 +1,191 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/globals.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.5.1/jquery.min.js"></script>
+    <script src="~/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
+    <script src="~/jquery-easyui-1.5.1/locale/easyui-lang-zh_CN.js"></script>
+    <title>Index</title>
+    <script>
+        $(function () {
+            $("#tb").datagrid({
+                url: '/majors/getmajors/',
+                width: 600,
+                height: 400,
+                fitColumns: true,
+                singleSelect: true,
+                toolbar: [
+                    {
+                        text: '添加',
+                        iconCls: 'icon-add',
+                        handler: function () {
+                            var url = "/majors/Add";
+                            $("#marjors_add_dlg").dialog({
+                                title: "专业添加--",
+                                iconCls: 'icon-add',
+                    
+                                modal: true,  //指定该对话框是模态对话框
+                                width: 300,
+                                height: 200,
+                                href: url,
+                                buttons: [
+                                   {
+                                       text: '保存',
+                                       iconCls: 'icon-save',
+                                       handler: function () {
+                                           
+                                           var name = $("#majors_add_major").textbox("getValue");
+                                           //var depid = $("#majors_add_depart").combobox("getValue");
+                                           var depid = $("#majors_add_depart").val();
+                                           $.get("/majors/addMajor", {DepartmentID:depid, Name: name, Status: 0 }, function (data) {
+                                               if (data == "ok") {
+                                                   $.messager.show({
+                                                       title: '提示...',
+                                                       msg: '保存成功！',
+                                                       showType: 'show'
+                                                   });
+                                                   $("#marjors_add_dlg").dialog("close");
+                                                   $("#tb").datagrid("reload");
+                                               }
+                                               else
+                                                   $.messager.show({
+                                                       title: '提示...',
+                                                       msg: '保存失败！',
+                                                       showType: 'show'
+                                                   });
+
+                                           }, "text");
+                                       }
+                                   },
+                                    {
+                                        text: '取消',
+                                        iconCls: 'icon-cancel',
+                                        handler: function () {
+                                            $("#marjors_add_dlg").dialog("close");
+                                
+                                        }
+                                    }
+                                ]
+                            });
+                        }
+                        
+                    },
+                    {
+                        text: "修改",
+                        iconCls: "icon-edit",
+                        handler: function () {
+                            var row = $("#tb").datagrid("getSelected");
+                            if (row == null) {
+                                $.messager.alert("提示...", "请选择行!", "warning");
+                                return;
+                            }
+                            var id = row.ID;
+                            var url = "/majors/Edit/" + id;
+                            $("#marjors_add_dlg").dialog({
+                                title: "专业修改--",
+                                iconCls: 'icon-add',
+
+                                modal: true,  //指定该对话框是模态对话框
+                                width: 300,
+                                height: 200,
+                                href: url,
+                                buttons: [
+                                   {
+                                       text: '保存',
+                                       iconCls: 'icon-save',
+                                       handler: function () {
+
+                                           var name = $("#majors_edit_name").textbox("getValue");
+                                           //var depid = $("#majors_add_depart").combobox("getValue");
+                                           var id = $("#majors_edit_id").val();
+                                           $.get("/majors/EditMajor", { ID: id, Name: name, Status: 0 }, function (data) {
+                                               if (data == "ok") {
+                                                   $.messager.show({
+                                                       title: '提示...',
+                                                       msg: '保存成功！',
+                                                       showType: 'show'
+                                                   });
+                                                   $("#marjors_add_dlg").dialog("close");
+                                                   $("#tb").datagrid("reload");
+                                               }
+                                               else
+                                                   $.messager.show({
+                                                       title: '提示...',
+                                                       msg: '保存失败！',
+                                                       showType: 'show'
+                                                   });
+
+                                           }, "text");
+                                       }
+                                   },
+                                    {
+                                        text: '取消',
+                                        iconCls: 'icon-cancel',
+                                        handler: function () {
+                                            $("#marjors_add_dlg").dialog("close");
+
+                                        }
+                                    }
+                                ]
+                            });
+                        }
+                    },
+                    '-',
+                    {
+                        text: '删除',
+                        iconCls: 'icon-remove',
+                        handler: function () {
+                            var row = $("#tb").datagrid("getSelected");
+                            if (row == null) {
+                                $.messager.alert("提示...", "请选择行!", "warning");
+                                return;
+                            }
+                            $.messager.confirm("提示...", "确信要删除专业“" + row.Name + "”吗?", function (t) {
+                                if (!t)
+                                    return;
+                                var id = row.ID;
+                                var url = "/majors/Delete/" + id;
+                                $.post(url, function (data) {
+                                    if (data == "ok") {
+                                        $.messager.show({
+                                            title: '提示...',
+                                            msg: '删除成功！',
+                                            showType: 'show'
+                                        });
+
+                                        $("#tb").datagrid("reload");
+                                    }
+                                    else
+                                        $.messager.show({
+                                            title: '提示...',
+                                            msg: '删除失败！',
+                                            showType: 'show'
+                                        });
+                                }, "text");
+                            });
+                        }
+                    }
+                ],
+                columns: [[
+                    {field:'departmentName',title:'部门名称',width:120},
+                    {field:'Name',title:'专业名称',width:200}
+                ]]
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <table id="tb"></table>
+    </div>
+    <div id="marjors_add_dlg"></div>
+</body>
+</html>

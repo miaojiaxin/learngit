@@ -1,0 +1,33 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+</head>
+<body>
+    <div>
+        <form id="classes_add_form">
+            <input type="hidden" id="classes_add_majorid" name="MajorID"/>
+            <div class="input_line">
+                <label class="leftlabel">班级名称：</label><input class="easyui-textbox" name="Name" id="classes_add_name" data-options="prompt:'请输入班级名称'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabel">班主任：</label><input id="classes_add_director" name="TeacherID"/>
+            </div>
+        </form>
+        </div>
+    <script>
+        $(function () {
+            $("#classes_add_director").combobox({
+                url: "/teachers/getteacherslist",
+                valueField: 'ID',
+                textField: "Name"
+            });
+           
+        });
+    </script>
+</body>
+</html>

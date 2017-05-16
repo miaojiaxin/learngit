@@ -1,0 +1,44 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+    <div>
+        <form id="students_edit" method="post">
+
+            <input type="hidden" name="ID" value="@Model.ID" />
+            <div class="input_line">
+                <label class="leftlabelext">姓名：</label><input class="easyui-textbox" id="students_edit_name" value="@Model.Name" name="Name" data-options="prompt:'请输入姓名'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabelext">学号：</label><input class="easyui-textbox" id="students_edit_studentno" value="@Model.StudentNo" name="StudentNo" data-options="prompt:'请输入学号'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabelext">联系电话：</label><input class="easyui-textbox" id="students_edit_telnum" value="@Model.TelNum" name="TelNum" data-options="prompt:'请输入联系电话'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabelext">QQ号：</label><input class="easyui-textbox" id="students_edit_qq" value="@Model.QQ" name="QQ" data-options="prompt:'请输入QQ号'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabelext">微信号：</label><input class="easyui-textbox" id="students_edit_wechat" value="@Model.WeChat" name="WeChat" data-options="prompt:'请输入微信号'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabelext">家长联系方式1：</label><input class="easyui-textbox" id="students_edit_ptelno1" value="@Model.PTelNo1" name="PTelNo1" data-options="prompt:'请输入家长联系电话'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabelext">家长联系方式2：</label><input class="easyui-textbox" id="students_edit_ptelno2" value="@Model.PTelNo2" name="PTelNo2" data-options="prompt:'请输入家长联系电话'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabelext">备注：</label><input class="easyui-textbox" id="students_edit_memo" value="@Model.Memo" name="Memo" data-options="prompt:'请输入备注信息'">
+            </div>
+        </form>  
+    </div>
+</body>
+</html>

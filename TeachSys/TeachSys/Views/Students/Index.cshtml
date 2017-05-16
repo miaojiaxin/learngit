@@ -1,0 +1,29 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    
+    <title>学生管理</title>
+    <link href="~/Content/globals.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/icon.css" rel="stylesheet" />
+    <script src="~/jquery-easyui-1.5.1/jquery.min.js"></script>
+    <script src="~/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
+    
+</head>
+<body>
+    <div>
+        专业方向：<select id="majors" class="easyui-combobox"></select>
+    班级：
+        <select id="classes" class="easyui-combobox" style="width:200px;"></select>
+    <a class="easyui-linkbutton" iconCls="icon-search" onclick="query($('#classes').combobox('getValue'))">查询</a>
+    <table id="tb"></table>
+</div>
+    <div id="students_dlg"></div>
+    <script src="~/Scripts/myjs/students.js"></script>
+</body>
+</html>

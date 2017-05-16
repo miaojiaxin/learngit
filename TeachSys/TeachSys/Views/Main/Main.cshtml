@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Main</title>
+    <link href="~/Content/globals.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/default/easyui.css" rel="stylesheet" />
+    <link href="~/jquery-easyui-1.5.1/themes/icon.css" rel="stylesheet" />
+    @*<script src="~/Scripts/jquery-2.2.1.js"></script>*@
+    <script src="~/jquery-easyui-1.5.1/jquery.min.js"></script>
+    <script src="~/jquery-easyui-1.5.1/jquery.easyui.min.js"></script>
+   <script>
+
+       function addTab(title, url) {
+           if ($("#tabs").tabs("exists", title)) {//判断title面板是否存在
+               $("#tabs").tabs("select", title);  //选中title面板
+           }
+           else {
+               $('#tabs').tabs('add', {
+                   title: title,
+                   //href: '/departments/',
+                   content: '<iframe style="margin:5px;width:100%;height:100%;border:0" src="' + url + '"></iframe>',
+                   closable: true
+               });
+           }
+       }
+   </script>
+
+</head>
+<body class="easyui-layout">
+
+        <div data-options="region:'north'" style="height:60px;background:url('/images/top.jpg')">
+            <div style="float:left;font-size:36px;color:white;margin:10px 0 0 20px;width:500px;">系部日常办公协同管理平台</div>
+            <div style="text-align:right;float:right;color:white;margin:10px 20px 0 0;width:600px;"><span style="padding:15px 40px 0 0;">你好,@ViewBag.teacherName</span><a class="easyui-linkbutton">注销</a></div>
+        </div>
+        <div class="easyui-accordion" data-options="region:'west',split:true" style="width:200px">
+            <div data-options="iconCls:'icon-tip'" title="系统管理" style="padding:2px 10px">
+                <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" style="width:100%" onclick="addTab('部门管理','/departments/');">部门管理</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" style="width:100%" onclick="addTab('专业管理', '/Majors/');">专业管理</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" style="width:100%" onclick="addTab('班级管理', '/Classes/');">班级管理</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" style="width:100%" onclick="addTab('教师管理', '/Teachers/');">教师管理</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" style="width:100%" onclick="addTab('学生管理', '/Students/');">学生管理</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" style="width:100%" onclick="addTab('课程管理', '/Courses/');">课程管理</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" style="width:100%" onclick="addTab('字典管理', '/BaseDataDics/');">字典管理</a>
+                
+            </div>
+            <div title="系统管理"></div>
+        </div>
+        <div id="tabs" class="easyui-tabs" data-options="region:'center'">
+            <div title="欢迎使用！">
+                
+            </div>
+           
+        </div>
+        <div data-options="region:'south'" style="height:60px">
+            copyright:hbsi 2017
+        </div>
+
+  
+</body>
+</html>

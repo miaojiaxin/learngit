@@ -1,0 +1,19 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+    <div>
+        <input type="hidden" id="majors_edit_id" name="ID" value="@Model.ID" />
+        <div class="input_line"><label class="leftlabel">专业名称：</label><input class="easyui-textbox" id="majors_edit_name" name="Name" value="@Model.Name" data-options="prompt:'请输入专业名称'"></div>
+
+    </div>
+</body>
+</html>

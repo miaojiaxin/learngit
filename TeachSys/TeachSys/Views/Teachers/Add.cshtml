@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add</title>
+</head>
+<body>
+    <div style="margin:10px">
+        <form id="teachers_add" method="post">
+
+            <input id="teachers_add_depart" type="hidden" name="DeptID" value="@ViewBag.DepartmentID" />
+            <div class="input_line">
+                <label class="leftlabel">姓名：</label><input class="easyui-textbox" id="teachers_add_teacherno" name="Name" data-options="prompt:'请输入姓名'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabel">教工号：</label><input class="easyui-textbox" id="teachers_add_teacherno" name="TeacherNo" data-options="prompt:'请输入教工号'">
+            </div>
+            <div class="input_line">
+                <label class="leftlabel">是否管理员：</label><input type="checkbox" id="teachers_add_islogin" value="1" name="IsLogin">
+            </div>
+</form>
+    </div>
+  
+</body>
+</html>

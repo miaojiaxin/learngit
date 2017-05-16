@@ -1,0 +1,15 @@
+﻿body {
+}
+.leftlabel{
+    display:inline-block;
+    width:80px;
+    text-align:right;
+}
+.leftlabelext{
+    display:inline-block;
+    width:160px;
+    text-align:right;
+}
+.input_line{
+    padding:5px;
+}
